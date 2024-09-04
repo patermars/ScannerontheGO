@@ -27,16 +27,16 @@ def extract_stable_frames(video_path, similarity_threshold=0.90, stability_durat
     return stable_frames
 
 def main():
-# Usage
-video_path = 'Test.mp4'
-stable_frames = extract_stable_frames(video_path)
+    # Usage
+    video_path = 'Test.mp4'
+    stable_frames = extract_stable_frames(video_path)
 
-# Process stable frames (apply image processing, OCR, etc.)
-for idx, frame in enumerate(stable_frames):
-    # Save frame as image
-    cv2.imwrite(f'frames/stable_frame_{idx}.jpg', frame)
-    
-    # TODO: Add image processing and OCR steps here
+    # Process stable frames (apply image processing, OCR, etc.)
+    for idx, frame in enumerate(stable_frames):
+        # Save frame as image
+        cv2.imwrite(f'frames/stable_frame_{idx}.jpg', frame)
+        
+        # TODO: Add image processing and OCR steps here
 
 if __name__ == "__main__":
     main()

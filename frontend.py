@@ -24,7 +24,6 @@ app.config['FRAMES_FOLDER'] = FRAMES_FOLDER
 def index():
     return render_template('upload.html')
 
-
 @app.route('/upload', methods=['POST'])
 def upload_file():
     if 'file' not in request.files:
@@ -51,6 +50,10 @@ def upload_file():
         
         return jsonify({'frames': frame_urls})
 
+@app.route('/select_frames', methods=['GET'])
+def select_frames():
+    return render_template('select_frames.html')
+
 @app.route('/frames/<filename>')
 def serve_frame(filename):
     return send_file(os.path.join(app.config['FRAMES_FOLDER'], filename))
@@ -75,7 +78,6 @@ def generate_pdf():
         os.remove(file_path)
     
     return send_file(pdf_path, as_attachment=True)
-
 
 if __name__ == '__main__':
     app.run(debug=True)

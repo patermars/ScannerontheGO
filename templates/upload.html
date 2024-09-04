@@ -10,7 +10,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            flex-direction: column;
             height: 100vh;
             margin: 0;
             background-color: #f0f0f0;
@@ -42,22 +41,6 @@
         input[type="submit"]:hover {
             background-color: #45a049;
         }
-        #frames {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
-            gap: 10px;
-            margin-top: 20px;
-        }
-        .frame {
-            border: 2px solid transparent;
-            cursor: pointer;
-            width: 100px; 
-            height: 100px;
-            object-fit: cover;
-        }
-        .frame.selected {
-            border-color: #4CAF50;
-        }
     </style>
 </head>
 <body>
@@ -67,15 +50,11 @@
             <input type="file" id="file-input" name="file" accept="video/*">
             <input type="submit" value="Upload Video">
         </form>
-        <div id="frames"></div>
-        <button id="generate-pdf" style="display:none;">Generate PDF</button>
     </div>
 
     <script>
         const form = document.getElementById('upload-form');
         const fileInput = document.getElementById('file-input');
-        const framesContainer = document.getElementById('frames');
-        const generatePdfButton = document.getElementById('generate-pdf');
 
         form.addEventListener('submit', function(e) {
             e.preventDefault();
@@ -88,46 +67,7 @@
             })
             .then(response => response.json())
             .then(data => {
-                displayFrames(data.frames);
-            })
-            .catch(error => console.error('Error:', error));
-        });
-
-        function displayFrames(frames) {
-            framesContainer.innerHTML = '';
-            frames.forEach((frame, index) => {
-                const img = document.createElement('img');
-                img.src = frame;
-                img.classList.add('frame');
-                img.dataset.index = index;
-                img.addEventListener('click', function() {
-                    img.classList.toggle('selected');
-                });
-                framesContainer.appendChild(img);
-            });
-            generatePdfButton.style.display = 'block';
-        }
-
-        generatePdfButton.addEventListener('click', function() {
-            const selectedFrames = Array.from(document.querySelectorAll('.frame.selected'))
-                                        .map(img => img.dataset.index);
-
-            fetch('/generate_pdf', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ selected_frames: selectedFrames })
-            })
-            .then(response => response.blob())
-            .then(blob => {
-                const url = window.URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = 'output.pdf';
-                document.body.appendChild(a);
-                a.click();
-                a.remove();
+                window.location.href = `/select_frames?frames=${data.frames.join(',')}`;
             })
             .catch(error => console.error('Error:', error));
         });
