@@ -2,8 +2,8 @@ import os
 import streamlit as st
 import cv2
 import numpy as np
-from generating_pdf import frames_to_pdf  # Ensure this function is adapted to be used with Streamlit
-from stable_frames import extract_stable_frames  # Ensure this function is adapted to be used with Streamlit
+from generating_pdf import frames_to_pdf
+from stable_frames import extract_stable_frames
 from PIL import Image
 
 # Directories
